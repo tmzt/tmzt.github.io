@@ -1,5 +1,5 @@
 ---
-title:
+title: A modern port of Linux to a ten-year-old QWERTY phone.
 ---
 
 A modern port of Linux to a ten-year-old QWERTY phone.
