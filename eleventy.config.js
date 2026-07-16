@@ -22,6 +22,17 @@ import plugins from './src/_config/plugins.js';
 import shortcodes from './src/_config/shortcodes.js';
 
 export default async function (eleventyConfig) {
+  // Serve
+  eleventyConfig.setServerOptions({
+    // Shows all local IP addresses in the console output
+    showAllHosts: true,
+
+    // Default is 8080
+    port: 8080,
+
+    // Additional options like https or live reload can go here
+  });
+
   // --------------------- Events: before build
   eleventyConfig.on('eleventy.before', async () => {
     await events.buildAllCss();
