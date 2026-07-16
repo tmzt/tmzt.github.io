@@ -3,8 +3,6 @@ title: A modern port of Linux to a ten-year-old QWERTY phone.
 description: An article on my journey to port a modern Linux kernel to a ten-year-old HTC QWERTY phone with devicetrees.
 ---
 
-A modern port of Linux to a ten-year-old QWERTY phone.
-
 [Link to the branch](https://github.com/tmzt/linux-stable-msm-dtsi)
 
 ![A screenshot of tmux on the HTC Speedy (running on the Mac Mini)](./20260615_101419_speedy_tmux.jpg)
