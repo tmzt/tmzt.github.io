@@ -6,6 +6,8 @@ description: An article on my journey to port a modern Linux kernel to a ten-yea
 A modern port of Linux to a ten-year-old QWERTY phone.
 
 
+![A screenshot of tmux on the HTC Speedy (running on the Mac Mini)](./20260615_101419_speedy_tmux.jpg)
+
 ### A note to the reader
 
 This post is fully composed by me, a human, *fatto a mano*.
@@ -43,7 +45,7 @@ I had access to a recovery image that booted the device, a specific version of T
 
 I don't remember if I tried USB first or framebuffer (or if I enabled the USB and expected it to work). For most ARM devices, the framebuffer is a region of memory that you write to and the result appears on the screen. This hardware doesn't work that way. Even writing to the framebuffer in the early kernel (from assembler) did nothing to update the screen. It was stuck on the splash screen and would not budge.
 
-Of course, without serial and framebuffer output I had no way of knowing if the kernel was even booting. The one thing I knew was configured, since the HTC bootloader used it, was the vibrator. I had started with a long-term-support (LTS) branch of Linux, 6.12.y, which was before the recent removal of a number of the upstreamed MSM drivers which I believed I would need to rely on. (That may not be true). We'll call this the "upstream" kernel. I also pointed Claude at a "downstream" branch htc-msm-7x30 which it could reference, get the addresses of the hardware and firmware devices and registers. Claude was able to find the address of the SSBI device and map the vibrator port. This gave me a beacon I could use to step through the early kernel, decompression, and early driver init.
+Of course, without serial and framebuffer output I had no way of knowing if the kernel was even booting. The one thing I knew was configured, since the HTC bootloader used it, was the vibrator. I had started with a long-term-support (LTS) branch of Linux, 6.12.y, which was before the recent removal of a number of the upstreamed MSM drivers which I believed I would need to rely on. (That may not be true). We'll call this the "upstream" kernel. I also pointed Claude at a "downstream" branch `htc-msm-7x30` which it could reference, get the addresses of the hardware and firmware devices and registers. Claude was able to find the address of the SSBI device and map the vibrator port. This gave me a beacon I could use to step through the early kernel, decompression, and early driver init.
 
 ### Getting the drivers to work
 
@@ -55,15 +57,15 @@ The USB device was left active and would "chirp" high-speed support but fail to 
 
 ### MMC and Wifi
 
-Getting the eMMC and wifi drivers to work turned out to take multiple days, multiple approaches, and even switching drivers. There's an older HSUSB driver which I first tried porting, calling it msm_7x30, based on the existing downstream driver `msm_sdcc`.
+Getting the eMMC and wifi drivers to work turned out to take multiple days, multiple approaches, and even switching drivers. There's an older HSUSB driver which I first tried porting, calling it `msm_7x30`, based on the existing downstream driver `msm_sdcc`.
 
-There's another newer, more supported driver called mmci, supporting the PL8xx chip IP which is what the Qualcomm chip IP is based on. After trying get the msm_7x30 driver working for wifi, I ended up switching over to mmci using PIO-only (no DMA). This finally got the wifi driver to the point that firmware download worked and the network device came up. (It also turns out that there are some timing based issues which means it only works when certain debug levels are enabled, or a delay is put in it's place. I don't have an answer to that part).
+There's another newer, more supported driver called mmci, supporting the PL8xx chip IP which is what the Qualcomm chip IP is based on. After trying get the msm_7x30 driver working for wifi, I ended up switching over to `mmci` using PIO-only (no DMA). This finally got the wifi driver to the point that firmware download worked and the network device came up. (It also turns out that there are some timing based issues which means it only works when certain debug levels are enabled, or a delay is put in it's place. I don't have an answer to that part).
 
 I wanted to support only one MMC driver so I decided to get eMMC working correctly with the same driver. First I implemented a PIO-only variant, then reintroduced DMA using Qualcomm ADM (advanced data mover).
 
 ### Weirdness and race conditions
 
-After a long coding session attempting to get wifi working again with mmci, I decided to test an earlier build which I had saved. This worked when manually loading the drivers and it turned out to be a combination of the timing of loading the modules and the level of logging adding extra delays in the IO path. I had attempted to build in the mmc support in order to support a rootfs directly from the kernel and this prevented the wifi from successfully initializing. I then turned to using an initramfs to load the mmc driver and switch to the root filesystem, after loading the wifi driver before the mmc driver.
+After a long coding session attempting to get wifi working again with `mmci`, I decided to test an earlier build which I had saved. This worked when manually loading the drivers and it turned out to be a combination of the timing of loading the modules and the level of logging adding extra delays in the IO path. I had attempted to build in the mmc support in order to support a rootfs directly from the kernel and this prevented the wifi from successfully initializing. I then turned to using an initramfs to load the mmc driver and switch to the root filesystem, after loading the wifi driver before the mmc driver.
 
 ### Power management
 
