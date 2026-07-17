@@ -17,7 +17,7 @@ The port is accomplished with the help of Claude. It would have taken six months
 
 I was looking for a device that would allow me to interact with agentic AIs using ssh connections to tmux running on my Mac Mini. I considered a lot of possible 3d printed cyberdeck devices combining a Bluetooth keyboard with a smartphone. I also considered some mini laptops but couldn't find one that was really pocket sized and did what I wanted for the price I wanted to pay. Another possibility was the keyboard back for the PinePhone (I have an early version) but I've found it fairly slow and the PinePhone Pro is no longer made (and I couldn't find one).
 
-So I started looking for an older device I was familiar with. Somewhere I have a T-Mobile G2 from when I was involved in the project of liberating that device early in the Android days. Unfortunately, I can't find it. I searched online for a similar device and came across the Sprint Evo 4G (HTC Speedy). It's the same hardware as the G2 (HTC Vision) but with a Wimax radio. $40 later and I had one on the way.
+So I started looking for an older device I was familiar with. Somewhere I have a [T-Mobile G2](https://www.gsmarena.com/t_mobile_g2-3518.php) from when I was involved in the project of liberating that device early in the Android days. Unfortunately, I can't find it. I searched online for a similar device and came across the *[Sprint Evo Shift 4G](https://www.gsmarena.com/htc_evo_shift_4g-3702.php)* (HTC Speedy). It's the same hardware as the G2 (HTC Vision) but with a Wimax radio. $40 later and I had one on the way.
 
 I want to be clear on my goals:
 
